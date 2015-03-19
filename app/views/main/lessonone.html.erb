@@ -1,0 +1,94 @@
+<p class="lead ">
+  <ins>show knockout js tutorial translate coffee script how todo</ins>
+</p>
+
+<div class="panel panel-primary" id="example1">
+  <div>
+    <div class="panel-heading">
+      <section>
+        <p>First name: <input data-bind="value: firstName"/></p>
+
+        <p>Last name: <input data-bind="value: lastName"/></p>
+      </section>
+    </div>
+    <div class="panel-body" data-bind="visible:show_code">
+<pre class="brush: js;">
+  class AppViewModel
+  constructor: (firstname,lastname)->
+  @firstName = ko.observable(firstname)
+  @lastName = ko.observable(lastname)
+
+
+  $ ->
+  ko.applyBindings(new AppViewModel("Bert","Bertington"));
+</pre>
+    </div>
+    <div class="panel-footer">
+      <button class="info" data-bind="click:edisplay"> show coffe code</button>
+      <button class="info" data-bind="click:ddisplay"> hide code</button>
+    </div>
+  </div>
+
+</div>
+
+
+<h3> L2 knockout js tu2 --> Your seat reservations</h3>
+
+<div id="example2">
+<table class="table table-condensed table-hover">
+  <thead><tr>
+    <th>Passenger name</th><th>Meal</th><th>Surcharge</th><th></th>
+  </tr></thead>
+  <!-- Todo: Generate table body -->
+  <tbody data-bind="foreach: seats">
+  <tr>
+    <!--<td data-bind="text: name"></td>-->
+    <!--<td data-bind="text: meal().mealName"></td>-->
+    <!--<td data-bind="text: meal().price"></td>-->
+    <td><input class="form-control" data-bind="value: name" /></td>
+    <td><select class="form-control" data-bind="options: $root.availableMeals, value: meal, optionsText: 'mealName'"></select></td>
+    <td ><span class="badge" data-bind="text: formattedPrice">Info</span></td>
+    <td><a href="#" data-bind="click: $root.removeSeat">Remove</a></td>
+  </tr>
+  </tbody>
+</table>
+  <button class=" btn btn-default" data-bind="click: addSeat">Reserve another seat</button>
+
+  <h3 data-bind="visible: totalSurcharge() > 0">
+    Total surcharge: $<span data-bind="text: totalSurcharge().toFixed(2)"></span>
+  </h3>
+</div>
+
+<pre class="brush: js;">
+  class SeatReservation
+  constructor: (@name, initialMeal) ->
+    @meal = ko.observable(initialMeal)
+    @formattedPrice = ko.computed () =>
+      price =@meal().price
+      return  if price  then "$" + price.toFixed(2) else "NONE"
+
+
+class ReservationsViewModel
+  constructor: () ->
+    @availableMeals = [
+      {mealName: "Standard (sandwich)", price: 0},
+      {mealName: "Premium (lobster)", price: 34.95},
+      {mealName: "Ultimate (whole zebra)", price: 290}
+    ]
+
+    @seats = ko.observableArray([
+      new SeatReservation("Steve", @availableMeals[0]),
+      new SeatReservation("Bert", @availableMeals[0])
+    ])
+
+    @totalSurcharge =ko.computed(() =>
+      return _.reduce(_.map(@seats(),((num) -> num.meal().price)),((x1,y1) -> x1 + y1),0)
+    )
+
+  addSeat: () =>
+    @seats.push(new SeatReservation("", @availableMeals[0]))
+
+  removeSeat: (seat) =>
+    @seats.remove(seat)
+
+</pre>
