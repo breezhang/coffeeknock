@@ -5,8 +5,9 @@
 #= require jquery_ujs
 #= require knockout
 #= require underscore
+#= require sammy
 
-
+# sammy add  client route function
 
 console.log "%c%s jquery", "color:green", $.fn.jquery if $
 console.log "%c%s knockoutjs", "color:green", ko.version if ko
@@ -53,18 +54,35 @@ class ReservationsViewModel
       return _.reduce(_.map(@seats(),((num) -> num.meal().price)),((x1,y1) -> x1 + y1),0)
     )
 
+    @show_code = ko.observable(false)
+
   addSeat: () =>
     @seats.push(new SeatReservation("", @availableMeals[0]))
 
   removeSeat: (seat) =>
     @seats.remove(seat)
 
+  ddisplay : () ->
+    @show_code(false)
 
-
-
-
-
-
+  display : () ->
+    @show_code(true)
 
 $ ->
   ko.applyBindings(new ReservationsViewModel(), $("#example2")[0])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,23 @@
 Knockoutsteptwo::Application.routes.draw do
+  get "kbook/one"
+  get "kbook/two"
+
+  get "second/spa"
+
+  get "open/summy"
+
   get "main/lessonone"
+
+
+  match '/mail', to: 'main#mails' ,via: [:get,:post]
+
+  match '/summy',to:'open#summy',via:[:get,:post]
+
+  match '/one',to:'open#one',via:[:get,:post]
+
+  match '/two',to:'second#spa',via:[:get,:post]
+  match '/three',to:'kbook#one',via:[:get,:post]
+  match '/four',to:'kbook#two',via:[:get,:post]
 
   #get "main/lessonone"
   root :to =>"main#lessonone"

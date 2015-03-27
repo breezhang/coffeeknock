@@ -1,17 +1,23 @@
-<p class="lead ">
-  <ins>show knockout js tutorial translate coffee script how todo</ins>
-</p>
+<%= stylesheet_link_tag :main %>
+<%= stylesheet_link_tag :coderunner %>
+<%= stylesheet_link_tag :webmail %>
 
-<div class="panel panel-primary" id="example1">
-  <div>
-    <div class="panel-heading">
-      <section>
-        <p>First name: <input data-bind="value: firstName"/></p>
+<div class="container-fluid">
 
-        <p>Last name: <input data-bind="value: lastName"/></p>
-      </section>
-    </div>
-    <div class="panel-body" data-bind="visible:show_code">
+  <p class="lead ">
+    <ins>show knockout js tutorial translate coffee script how todo</ins>
+  </p>
+  <div class="row">
+    <div class="panel panel-primary col-md-8" id="example1">
+      <div>
+        <div class="panel-heading">
+          <section>
+            <p>First name: <input data-bind="value: firstName"/></p>
+
+            <p>Last name: <input data-bind="value: lastName"/></p>
+          </section>
+        </div>
+        <div class="panel-body" data-bind="visible:show_code">
 <pre class="brush: js;">
   class AppViewModel
   constructor: (firstname,lastname)->
@@ -22,44 +28,52 @@
   $ ->
   ko.applyBindings(new AppViewModel("Bert","Bertington"));
 </pre>
-    </div>
-    <div class="panel-footer">
-      <button class="info" data-bind="click:edisplay"> show coffe code</button>
-      <button class="info" data-bind="click:ddisplay"> hide code</button>
+        </div>
+        <div class="panel-footer">
+          <button class="info" data-bind="click:edisplay"> show coffe code</button>
+          <button class="info" data-bind="click:ddisplay"> hide code</button>
+        </div>
+      </div>
+
     </div>
   </div>
 
-</div>
+  <h3> L2 knockout js tu2 --> Your seat reservations</h3>
 
+  <div class="row">
+    <div class="col-md-8" id="example2">
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th>Passenger name</th>
+          <th>Meal</th>
+          <th>Surcharge</th>
+          <th></th>
+        </tr>
+        </thead>
+        <!-- Todo: Generate table body -->
+        <tbody data-bind="foreach: seats">
+        <tr>
+          <!--<td data-bind="text: name"></td>-->
+          <!--<td data-bind="text: meal().mealName"></td>-->
+          <!--<td data-bind="text: meal().price"></td>-->
+          <td><input class="form-control" data-bind="value: name"/></td>
+          <td>
+            <select class="form-control" data-bind="options: $root.availableMeals, value: meal, optionsText: 'mealName'"></select>
+          </td>
+          <td><span class="badge" data-bind="text: formattedPrice">Info</span></td>
+          <td><a href="#" data-bind="click: $root.removeSeat">Remove</a></td>
+        </tr>
+        </tbody>
+      </table>
+      <button class=" btn btn-default" data-bind="click: addSeat">Reserve another seat</button>
 
-<h3> L2 knockout js tu2 --> Your seat reservations</h3>
+      <h3 data-bind="visible: totalSurcharge() > 0">
+        Total surcharge: $<span data-bind="text: totalSurcharge().toFixed(2)"></span>
+      </h3>
 
-<div id="example2">
-<table class="table table-condensed table-hover">
-  <thead><tr>
-    <th>Passenger name</th><th>Meal</th><th>Surcharge</th><th></th>
-  </tr></thead>
-  <!-- Todo: Generate table body -->
-  <tbody data-bind="foreach: seats">
-  <tr>
-    <!--<td data-bind="text: name"></td>-->
-    <!--<td data-bind="text: meal().mealName"></td>-->
-    <!--<td data-bind="text: meal().price"></td>-->
-    <td><input class="form-control" data-bind="value: name" /></td>
-    <td><select class="form-control" data-bind="options: $root.availableMeals, value: meal, optionsText: 'mealName'"></select></td>
-    <td ><span class="badge" data-bind="text: formattedPrice">Info</span></td>
-    <td><a href="#" data-bind="click: $root.removeSeat">Remove</a></td>
-  </tr>
-  </tbody>
-</table>
-  <button class=" btn btn-default" data-bind="click: addSeat">Reserve another seat</button>
-
-  <h3 data-bind="visible: totalSurcharge() > 0">
-    Total surcharge: $<span data-bind="text: totalSurcharge().toFixed(2)"></span>
-  </h3>
-</div>
-
-<pre class="brush: js;">
+      <div data-bind="visible:show_code" class="info code_container">
+  <pre class="brush: js;">
   class SeatReservation
   constructor: (@name, initialMeal) ->
     @meal = ko.observable(initialMeal)
@@ -92,3 +106,89 @@ class ReservationsViewModel
     @seats.remove(seat)
 
 </pre>
+      </div>
+      <br>
+
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default" data-bind="click:ddisplay">hide</button>
+        <button type="button" class="btn btn-default" data-bind="click:display">show</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row" id="example3">
+    <div class="col-md-8">
+
+      <!-- Folders -->
+      <ul class="folders" data-bind="foreach: folders">
+        <li data-bind="text: $data,
+                       css: { selected: $data == $root.chosenFolderId() },
+                       click: $root.goToFolder"></li>
+      </ul>
+
+      <!-- Mails grid -->
+      <table class="mails" data-bind="with: chosenFolderData">
+        <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
+        <tbody data-bind="foreach: mails">
+        <tr data-bind="click: $root.goToMail">
+          <td data-bind="text: from"></td>
+          <td data-bind="text: to"></td>
+          <td data-bind="text: subject"></td>
+          <td data-bind="text: date"></td>
+        </tr>
+        </tbody>
+      </table>
+
+      <!-- Chosen mail -->
+      <div class="viewMail" data-bind="with: chosenMailData">
+        <div class="mailInfo">
+          <h1 data-bind="text: subject"></h1>
+          <p><label>From</label>: <span data-bind="text: from"></span></p>
+          <p><label>To</label>: <span data-bind="text: to"></span></p>
+          <p><label>Date</label>: <span data-bind="text: date"></span></p>
+        </div>
+        <p class="message" data-bind="html: messageContent" />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+    $(function(){
+        function WebmailViewModel() {
+            // Data
+            var self = this;
+            self.folders = ['Inbox', 'Archive', 'Sent', 'Spam'];
+            self.chosenFolderId = ko.observable();
+            self.chosenFolderData = ko.observable();
+            self.chosenMailData = ko.observable();
+
+            // Behaviours
+            self.goToFolder = function (folder) { location.hash = folder };
+            self.goToMail = function (mail) { location.hash = mail.folder + '/' + mail.id };
+
+            // Client-side routes
+            Sammy(function () {
+                this.get('#:folder', function () {
+                    self.chosenFolderId(this.params.folder);
+                    self.chosenMailData(null);
+                    $.get("/mail", { folder: this.params.folder }, self.chosenFolderData);
+                });
+
+                this.get('#:folder/:mailId', function () {
+                    self.chosenFolderId(this.params.folder);
+                    self.chosenFolderData(null);
+                    $.get("/mail", { mailId: this.params.mailId }, self.chosenMailData);
+                });
+
+                this.get('', function () { this.app.runRoute('get', '#Inbox') });
+            }).run();
+        };
+        ko.applyBindings(new WebmailViewModel(),$("#example3")[0]);
+    });
+
+</script>
+

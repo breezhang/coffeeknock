@@ -9,5 +9,9 @@
 //
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
-//=require shCore
-//= require_tree .
+
+//=require jquery
+//=require sammy
+//=require knockout
+//=require underscore
+// require bootstrap-sprockets
