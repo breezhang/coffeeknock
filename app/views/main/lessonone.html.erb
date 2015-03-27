@@ -152,43 +152,53 @@ class ReservationsViewModel
       </div>
     </div>
   </div>
+
+  <div class="tab-content">
+    <div class="tab-pane active">
+    <pre class="brush: js;">
+      class  WebmailViewModel
+  constructor: () ->
+      self=@
+      @folders = ['Inbox', 'Archive', 'Sent', 'Spam']
+      @chosenFolderId = ko.observable();
+      @chosenFolderData = ko.observable();
+      @chosenMailData = ko.observable();
+
+      $.sammy(() ->
+        @get('#:folder' ,() ->
+          console.log(@params.folder)
+          self.chosenFolderId(@params.folder)
+          self.chosenMailData(null)
+          $.get("/mail", { folder: @params.folder }, self.chosenFolderData)
+        )
+
+        @get('#:folder/:mailId',()->
+          self.chosenFolderId(@params.folder);
+          self.chosenFolderData(null);
+          $.get("/mail", { mailId: @params.mailId }, self.chosenMailData)
+        )
+
+        @get('',()->@app.runRoute('get', '#Inbox'))
+      ).run()
+
+
+  goToFolder : (folder) ->  location.hash = folder
+  goToMail   : (mail)   ->  location.hash = mail.folder + '/' + mail.id
+
+
+$ ->
+  ko.applyBindings(new WebmailViewModel(),$("#example3")[0])
+
+    </pre>
+  </div>
+
+    <br>
+    <button onclick="$(this).siblings('div').removeClass('active')">hide</button>
+    <button onclick="$(this).siblings('div').addClass('active') ;$('html, body').scrollTop( $(document).height() );">show</button>
+
+  </div>
 </div>
 
 
-<script>
-
-    $(function(){
-        function WebmailViewModel() {
-            // Data
-            var self = this;
-            self.folders = ['Inbox', 'Archive', 'Sent', 'Spam'];
-            self.chosenFolderId = ko.observable();
-            self.chosenFolderData = ko.observable();
-            self.chosenMailData = ko.observable();
-
-            // Behaviours
-            self.goToFolder = function (folder) { location.hash = folder };
-            self.goToMail = function (mail) { location.hash = mail.folder + '/' + mail.id };
-
-            // Client-side routes
-            Sammy(function () {
-                this.get('#:folder', function () {
-                    self.chosenFolderId(this.params.folder);
-                    self.chosenMailData(null);
-                    $.get("/mail", { folder: this.params.folder }, self.chosenFolderData);
-                });
-
-                this.get('#:folder/:mailId', function () {
-                    self.chosenFolderId(this.params.folder);
-                    self.chosenFolderData(null);
-                    $.get("/mail", { mailId: this.params.mailId }, self.chosenMailData);
-                });
-
-                this.get('', function () { this.app.runRoute('get', '#Inbox') });
-            }).run();
-        };
-        ko.applyBindings(new WebmailViewModel(),$("#example3")[0]);
-    });
-
-</script>
+<%= javascript_include_tag "main" %>
 

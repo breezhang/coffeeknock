@@ -73,6 +73,40 @@ $ ->
 
 
 
+class  WebmailViewModel
+  constructor: () ->
+      self=@
+      @folders = ['Inbox', 'Archive', 'Sent', 'Spam']
+      @chosenFolderId = ko.observable();
+      @chosenFolderData = ko.observable();
+      @chosenMailData = ko.observable();
+
+      $.sammy('#example3',() ->
+        @get('#:folder' ,() ->
+          console.log(@params.folder)
+          self.chosenFolderId(@params.folder)
+          self.chosenMailData(null)
+          $.get("/mail", { folder: @params.folder }, self.chosenFolderData)
+        )
+
+        @get('#:folder/:mailId',()->
+          self.chosenFolderId(@params.folder);
+          self.chosenFolderData(null);
+          $.get("/mail", { mailId: @params.mailId }, self.chosenMailData)
+        )
+
+        @get('',()->@app.runRoute('get', '#Inbox'))
+      ).run()
+
+
+  goToFolder : (folder) ->  location.hash = folder
+  goToMail   : (mail)   ->  location.hash = mail.folder + '/' + mail.id
+
+
+$ ->
+  ko.applyBindings(new WebmailViewModel(),$("#example3")[0])
+
+
 
 
 
