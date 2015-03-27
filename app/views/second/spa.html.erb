@@ -1,0 +1,41 @@
+<h1>Second#spa</h1>
+<p>Find me in app/views/second/spa.html.erb</p>
+
+<p>
+  <a href="#/tab_1">Tab 1</a>
+  <a href="#/tab_2">Tab 2</a>
+</p>
+
+<div>
+
+  <div class="section" id="tab_1_section">
+    <p>hello from tab 1</p>
+  </div>
+
+  <div class="section" id="tab_2_section">
+    <p>hello from tab 2</p>
+  </div>
+
+</div>
+
+<script>
+    (function($) {
+        var app = new Sammy.Application(function() {
+                //console.log(this);
+                this.get('#/tab_1', function() {
+                    $('.section').hide();
+                    $('#tab_1_section').show();
+                //}
+                 });
+
+                this.get('#/tab_2', function() {
+                    $('.section').hide();
+                    $('#tab_2_section').show();
+                });
+            //}
+        });
+        $(function() {
+            app.run('#/tab_1')
+        });
+    })(jQuery);
+</script>

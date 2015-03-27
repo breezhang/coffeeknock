@@ -1,0 +1,2 @@
+module KbookHelper
+end
